@@ -1,4 +1,11 @@
 import Autor from "../models/Autor.js";
+import Joi from "joi";
+
+const autorSchema = Joi.object({
+  id: Joi.number().required(),
+  nome: Joi.string().required(),
+  nacionalidade: Joi.string().required(),
+});
 
 class AutorController {
   async listar(req, res) {
@@ -21,6 +28,9 @@ class AutorController {
   }
 
   async adicionar(req, res) {
+    const { error } = autorSchema.validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
     try {
       const autor = new Autor(req.body);
       await autor.save();
@@ -31,6 +41,9 @@ class AutorController {
   }
 
   async atualizar(req, res) {
+    const { error } = autorSchema.validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
     try {
       const autor = await Autor.findOneAndUpdate(
         { id: req.params.id },
