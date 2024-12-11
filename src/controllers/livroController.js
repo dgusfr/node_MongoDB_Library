@@ -59,6 +59,17 @@ class LivroController {
     }
   }
 
+  async listarPorAutor(req, res) {
+    try {
+      const livros = await Livro.find({ autorId: req.params.autorId });
+      if (!livros.length)
+        return res.status(404).send("Nenhum livro encontrado para este autor.");
+      res.status(200).json(livros);
+    } catch (err) {
+      res.status(500).send("Erro ao buscar livros do autor.");
+    }
+  }
+
   async deletar(req, res) {
     try {
       const livro = await Livro.findOneAndDelete({ id: req.params.id });
