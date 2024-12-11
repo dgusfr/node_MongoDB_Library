@@ -1,4 +1,13 @@
 import Livro from "../models/Livro.js";
+import Joi from "joi";
+
+const livroSchema = Joi.object({
+  id: Joi.number().required(),
+  titulo: Joi.string().required(),
+  autor: Joi.string().required(),
+  preco: Joi.number().required(),
+  anoPublicacao: Joi.number().optional(),
+});
 
 class LivroController {
   async listar(req, res) {
@@ -21,6 +30,9 @@ class LivroController {
   }
 
   async adicionar(req, res) {
+    const { error } = livroSchema.validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
     try {
       const livro = new Livro(req.body);
       await livro.save();
@@ -31,6 +43,9 @@ class LivroController {
   }
 
   async atualizar(req, res) {
+    const { error } = livroSchema.validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
     try {
       const livro = await Livro.findOneAndUpdate(
         { id: req.params.id },
