@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   env: {
     node: true,
     es2021: true,
@@ -9,6 +9,10 @@ module.exports = {
     sourceType: "module",
   },
   rules: {
+    "no-unused-vars": "warn",
+    "no-console": "off",
     indent: ["error", 2],
+    quotes: ["error", "double"],
+    semi: ["error", "always"],
   },
 };
