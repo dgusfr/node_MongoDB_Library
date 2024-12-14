@@ -1,71 +1,67 @@
-import Autor from "../models/Autor.js";
-import Joi from "joi";
-
-const autorSchema = Joi.object({
-  id: Joi.number().required(),
-  nome: Joi.string().required(),
-  nacionalidade: Joi.string().required(),
-});
+import autores from "../models/Autor.js";
 
 class AutorController {
-  async listar(req, res) {
+  static listarAutores = async (req, res, next) => {
     try {
-      const autores = await Autor.find();
-      res.status(200).json(autores);
-    } catch (err) {
-      res.status(500).send("Erro ao buscar autores.");
+      const { page = 1, limit = 10 } = req.query;
+      const autoresResultado = await autores
+        .find()
+        .skip((page - 1) * limit)
+        .limit(Number(limit));
+      res.status(200).json(autoresResultado);
+    } catch (erro) {
+      next(erro);
     }
-  }
+  };
 
-  async obterPorId(req, res) {
+  static listarAutorPorId = async (req, res, next) => {
     try {
-      const autor = await Autor.findOne({ id: req.params.id });
-      if (!autor) return res.status(404).send("Autor não encontrado.");
-      res.status(200).json(autor);
-    } catch (err) {
-      res.status(500).send("Erro ao buscar o autor.");
+      const id = req.params.id;
+      const autorResultado = await autores.findById(id);
+      if (!autorResultado) {
+        return res.status(404).json({ message: "Autor não encontrado" });
+      }
+      res.status(200).send(autorResultado);
+    } catch (erro) {
+      next(erro);
     }
-  }
+  };
 
-  async adicionar(req, res) {
-    const { error } = autorSchema.validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
+  static cadastrarAutor = async (req, res, next) => {
     try {
-      const autor = new Autor(req.body);
-      await autor.save();
-      res.status(201).json(autor);
-    } catch (err) {
-      res.status(400).send("Erro ao adicionar o autor.");
+      const autor = new autores(req.body);
+      const autorResultado = await autor.save();
+      res.status(201).send(autorResultado.toJSON());
+    } catch (erro) {
+      next(erro);
     }
-  }
+  };
 
-  async atualizar(req, res) {
-    const { error } = autorSchema.validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
+  static atualizarAutor = async (req, res, next) => {
     try {
-      const autor = await Autor.findOneAndUpdate(
-        { id: req.params.id },
-        req.body,
-        { new: true }
-      );
-      if (!autor) return res.status(404).send("Autor não encontrado.");
-      res.status(200).json(autor);
-    } catch (err) {
-      res.status(400).send("Erro ao atualizar o autor.");
+      const id = req.params.id;
+      const autor = await autores.findByIdAndUpdate(id, { $set: req.body }, { new: true });
+      if (!autor) {
+        return res.status(404).json({ message: "Autor não encontrado" });
+      }
+      res.status(200).send({ message: "Autor atualizado com sucesso" });
+    } catch (erro) {
+      next(erro);
     }
-  }
+  };
 
-  async deletar(req, res) {
+  static excluirAutor = async (req, res, next) => {
     try {
-      const autor = await Autor.findOneAndDelete({ id: req.params.id });
-      if (!autor) return res.status(404).send("Autor não encontrado.");
-      res.status(204).send();
-    } catch (err) {
-      res.status(500).send("Erro ao deletar o autor.");
+      const id = req.params.id;
+      const autor = await autores.findByIdAndDelete(id);
+      if (!autor) {
+        return res.status(404).json({ message: "Autor não encontrado" });
+      }
+      res.status(200).send({ message: "Autor removido com sucesso" });
+    } catch (erro) {
+      next(erro);
     }
-  }
+  };
 }
 
-export default new AutorController();
+export default AutorController;
