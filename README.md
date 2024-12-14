@@ -84,6 +84,8 @@ A API segue uma estrutura modular organizada com as seguintes responsabilidades:
 
 ---
 
+<br>
+
 ## Documentação da API
 
 ### **Endpoints**
