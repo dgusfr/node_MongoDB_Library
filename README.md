@@ -12,6 +12,7 @@ API RESTful desenvolvida para gerenciar uma livraria, permitindo a manipulação
 - [Documentação da API](#documentação-da-api)
 - [Autor](#autor)
 
+<br>
 ---
 
 ## Tecnologias Utilizadas
