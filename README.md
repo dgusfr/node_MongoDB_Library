@@ -128,6 +128,9 @@ A API segue uma estrutura modular organizada com as seguintes responsabilidades:
 ## Autor
 
 Desenvolvido por Diego Franco.
+
+<br>
+
 <!-- 
 Rotas são os garçons: Eles recebem os pedidos dos clientes (requisições) e levam para a cozinha (controller).
 Controller é a cozinha: Ele prepara o pedido, pegando os ingredientes no estoque (model).
