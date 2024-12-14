@@ -2,6 +2,8 @@
 
 API RESTful desenvolvida para gerenciar uma livraria, permitindo a manipulação de dados de livros e autores através de operações CRUD. A API foi construída com Node.js, Express e MongoDB.
 
+<br>
+
 ## Sumário
 
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
