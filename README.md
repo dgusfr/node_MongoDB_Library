@@ -44,6 +44,8 @@ API RESTful desenvolvida para gerenciar uma livraria, permitindo a manipulação
 
 API criada para gerenciamento de livros e autores em uma livraria. Os dados são armazenados em um banco de dados MongoDB, e a API utiliza Express para o gerenciamento de rotas. Todas as operações incluem validação de dados e testes automatizados para garantir a funcionalidade e segurança.
 
+<br>
+
 ---
 
 ## Funcionalidades
