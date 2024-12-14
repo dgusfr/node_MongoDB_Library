@@ -31,6 +31,7 @@ API RESTful desenvolvida para gerenciar uma livraria, permitindo a manipulação
   </div>
 </div>
 
+<br>
 ---
 
 ## Status
