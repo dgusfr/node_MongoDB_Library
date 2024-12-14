@@ -67,6 +67,7 @@ API criada para gerenciamento de livros e autores em uma livraria. Os dados são
   - Excluir um autor.
 
 ---
+<br>
 
 ## Explicação
 
