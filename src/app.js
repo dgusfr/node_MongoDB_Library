@@ -1,25 +1,22 @@
 import express from "express";
-import dotenv from "dotenv";
-import helmet from "helmet";
-import cors from "cors";
-import "./config/database.js";
-import routes from "./routes/routes.js";
+import db from "./config/dbConnect.js";
+import routes from "./routes/index.js";
 
-dotenv.config();
-
-const app = express();
-
-// Configuração de segurança e middlewares
-app.use(helmet());
-app.use(cors());
-app.use(express.json());
-
-// Rota principal
-app.get("/", (req, res) => {
-  res.status(200).send("API de Livraria");
+db.on("error", console.log.bind(console, "Erro de conexão"));
+db.once("open", () => {
+  console.log("Conexão com o banco feita com sucesso");
 });
 
-// Integração das rotas
-app.use("/", routes);
+const app = express();
+app.use(express.json());
+routes(app);
+
+// Middleware Global de Tratamento de Erros
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).json({
+    message: err.message || "Erro interno no servidor",
+  });
+});
 
 export default app;
